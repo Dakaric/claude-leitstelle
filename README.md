@@ -1,6 +1,12 @@
 # claude-leitstelle
 
-Eine Claude-Code-Session arbeitet als Leitstelle und verteilt Aufträge an mehrere Bau-Sessions. Ein Advisor auf Claude Fable 5.1 berät lesend, wenn eine Session vor einer Entscheidung steht.
+[![Release](https://img.shields.io/github/v/release/Dakaric/claude-leitstelle)](https://github.com/Dakaric/claude-leitstelle/releases/latest)
+[![Lizenz: MIT](https://img.shields.io/badge/Lizenz-MIT-blue.svg)](LICENSE)
+[![Claude Code](https://img.shields.io/badge/Claude%20Code-Skills-d97757)](https://code.claude.com/docs/en/skills)
+
+Mehrere Claude-Code-Sessions parallel steuern: Eine Session arbeitet als Leitstelle und verteilt Aufträge an mehrere Bau-Sessions. Ein Advisor auf Claude Fable 5.1 berät lesend, wenn eine Session vor einer Entscheidung steht. Zwei Skills, hochgefahren wird alles über `/leitstelle-start`.
+
+> **English summary:** Two Claude Code skills for running several Claude Code sessions in parallel from one terminal layout. One session acts as the dispatcher ("Leitstelle"), several worker sessions build, and a read-only advisor session on a different model (Claude Fable by default, Opus as fallback) answers their decision questions. `/leitstelle-start` asks how many sessions you want, prints one ready-to-paste start command per terminal pane and checks in with every session. The skills and docs are in German.
 
 ![Sechs Terminal-Panes im Raster: links die Leitstelle, darunter der Advisor, rechts vier Bau-Sessions](docs/images/layout.png)
 
