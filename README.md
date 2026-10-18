@@ -12,7 +12,11 @@ Mehrere Claude-Code-Sessions parallel steuern: Eine Session arbeitet als Leitste
 
 ## Video
 
-Der ganze Ablauf in 74 Sekunden, mit Sprecher: [docs/video/leitstelle.mp4](docs/video/leitstelle.mp4). Gebaut ist das Video mit [HyperFrames](https://github.com/heygen-com/hyperframes), die Quelle liegt unter `video/`. Projekt und Konversationen darin sind erfunden.
+Der ganze Ablauf in 74 Sekunden, mit Sprecher:
+
+https://github.com/user-attachments/assets/0b41b4cc-8f81-4342-b3d3-2bc909a80d6a
+
+Die volle Qualität liegt unter [docs/video/leitstelle.mp4](docs/video/leitstelle.mp4). Gebaut ist das Video mit [HyperFrames](https://github.com/heygen-com/hyperframes), die Quelle liegt unter `video/`. Projekt und Konversationen darin sind erfunden.
 
 ## Wie es zusammenspielt
 
