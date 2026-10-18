@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <template>
+      <style>
+        #headlines-root {
+          position: absolute;
+          inset: 0;
+          color: var(--fg);
+          font-family: Montserrat, sans-serif;
+        }
+        .cap {
+          position: absolute;
+          left: 80px;
+          top: 38px;
+          width: 1330px;
+        }
+        .cap h2 {
+          margin-top: 10px;
+          font-size: 56px;
+          font-weight: 900;
+          line-height: 1.08;
+          letter-spacing: -0.03em;
+        }
+        .cap h2 code {
+          font-family: "JetBrains Mono", monospace;
+          font-weight: 700;
+          font-size: 52px;
+          letter-spacing: -0.02em;
+          color: var(--amber);
+        }
+        .cap p {
+          margin-top: 10px;
+          font-size: 25px;
+          font-weight: 400;
+          color: var(--dim);
+        }
+        .cap p b {
+          font-family: "JetBrains Mono", monospace;
+          font-weight: 700;
+          color: var(--amber);
+        }
+        #rail {
+          position: absolute;
+          left: 1456px;
+          top: 50px;
+          width: 384px;
+          height: 40px;
+        }
+        .seg {
+          position: absolute;
+          top: 0;
+          width: 56px;
+          height: 40px;
+        }
+        .seg span {
+          display: block;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 16px;
+          font-weight: 700;
+          color: var(--dim);
+        }
+        .seg i,
+        .seg b {
+          position: absolute;
+          left: 0;
+          bottom: 0;
+          width: 56px;
+          height: 6px;
+          border-radius: 3px;
+          background: var(--line);
+        }
+        .seg b {
+          background: var(--amber);
+          transform-origin: 0 50%;
+        }
+      </style>
+
+      <div data-hf-id="hf-lks4" id="headlines-root" data-composition-id="headlines" data-width="1920" data-height="1080">
+        <div data-hf-id="hf-gvf1" id="rail">
+          <div data-hf-id="hf-lqw4" class="seg" style="left: 0px"><span data-hf-id="hf-p81i">01</span><i data-hf-id="hf-wt6k"></i><b data-hf-id="hf-xujp"></b></div>
+          <div data-hf-id="hf-9028" class="seg" style="left: 66px"><span data-hf-id="hf-pmcj">02</span><i data-hf-id="hf-zeb8"></i><b data-hf-id="hf-ey49"></b></div>
+          <div data-hf-id="hf-7v26" class="seg" style="left: 132px"><span data-hf-id="hf-q0nk">03</span><i data-hf-id="hf-y7e5"></i><b data-hf-id="hf-g51c"></b></div>
+          <div data-hf-id="hf-gyzu" class="seg" style="left: 198px"><span data-hf-id="hf-n8id">04</span><i data-hf-id="hf-ylp6"></i><b data-hf-id="hf-fqqb"></b></div>
+          <div data-hf-id="hf-vwio" class="seg" style="left: 264px"><span data-hf-id="hf-nmte">05</span><i data-hf-id="hf-0l8b"></i><b data-hf-id="hf-dr76"></b></div>
+          <div data-hf-id="hf-avzm" class="seg" style="left: 330px"><span data-hf-id="hf-o14f">06</span><i data-hf-id="hf-0zjc"></i><b data-hf-id="hf-dcw5"></b></div>
+        </div>
+        <div data-hf-id="hf-h5qz" class="cap" id="cap1">
+          <div data-hf-id="hf-e7iu" class="kicker">SCHRITT 1 VON 6 · TEILEN</div>
+          <h2 data-hf-id="hf-7jeq">Terminal in sechs Panes teilen</h2>
+          <p data-hf-id="hf-xgtk">Leitstelle links oben, Advisor darunter, vier Sessions rechts</p>
+        </div>
+        <div data-hf-id="hf-8hv4" class="cap" id="cap2">
+          <div data-hf-id="hf-ipe7" class="kicker">SCHRITT 2 VON 6 · STARTEN</div>
+          <h2 data-hf-id="hf-tjbi"><code data-hf-id="hf-cv67">/leitstelle-start</code> in der Leitstelle</h2>
+          <p data-hf-id="hf-5hdb">Zwei Fragen, dann kommt je Terminal ein fertiger Startbefehl</p>
+        </div>
+        <div data-hf-id="hf-99ix" class="cap" id="cap3">
+          <div data-hf-id="hf-nj7l" class="kicker">SCHRITT 3 VON 6 · EINFÜGEN</div>
+          <h2 data-hf-id="hf-np46">Startbefehle in die Panes</h2>
+          <p data-hf-id="hf-c8l0">Jede Session startet mit ihrem Namen und wartet. Der Advisor-Befehl bringt seine Startzeile schon mit.</p>
+        </div>
+        <div data-hf-id="hf-0ln2" class="cap" id="cap4">
+          <div data-hf-id="hf-zs7c" class="kicker">SCHRITT 4 VON 6 · ANMELDEN</div>
+          <h2 data-hf-id="hf-pmi9">„alles ready“, alle melden sich</h2>
+          <p data-hf-id="hf-9swl">Die Leitstelle schreibt jede Session an und sammelt die Anmeldungen</p>
+        </div>
+        <div data-hf-id="hf-4jr3" class="cap" id="cap5">
+          <div data-hf-id="hf-9mj9" class="kicker">SCHRITT 5 VON 6 · ADVISOR</div>
+          <h2 data-hf-id="hf-mx24">Advisor zuschalten</h2>
+          <p data-hf-id="hf-wqhe">Eine Probe, dann wissen alle Sessions, wohin ihre Fragen gehen</p>
+        </div>
+        <div data-hf-id="hf-to9g" class="cap" id="cap6">
+          <div data-hf-id="hf-h9mk" class="kicker">SCHRITT 6 VON 6 · ARBEITEN</div>
+          <h2 data-hf-id="hf-ox9a">Erst fragen, dann bauen</h2>
+          <p data-hf-id="hf-zzst">Die Leitstelle legt die Akte bei, der Advisor antwortet Session 2 direkt</p>
+        </div>
+        <div data-hf-id="hf-ufx9" class="cap" id="cap7">
+          <div data-hf-id="hf-mn3o" class="kicker">SCHRITT 6 VON 6 · ARBEITEN</div>
+          <h2 data-hf-id="hf-jluv">Deine Fragen kommen gebündelt</h2>
+          <p data-hf-id="hf-hpwl">Was nur du entscheiden kannst, legt dir die Leitstelle gesammelt vor</p>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          /* Zeiten sind Sekunden im Gesamtvideo; diese Komposition beginnt bei Sekunde 5. */
+          const OFFSET = 5;
+          const tl = gsap.timeline({ paused: true });
+          const at = (t) => t - OFFSET;
+          const SCENES = [
+            { id: "#cap1", step: 0, start: 5.2, end: 14 },
+            { id: "#cap2", step: 1, start: 14, end: 24 },
+            { id: "#cap3", step: 2, start: 24, end: 33 },
+            { id: "#cap4", step: 3, start: 33, end: 43 },
+            { id: "#cap5", step: 4, start: 43, end: 50 },
+            { id: "#cap6", step: 5, start: 50, end: 60 },
+            { id: "#cap7", step: null, start: 60, end: 67 },
+          ];
+          const segs = document.querySelectorAll("#rail .seg");
+
+          tl.fromTo("#rail", { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, at(5.4));
+          SCENES.forEach(({ id, step, start, end }) => {
+            const parts = [id + " .kicker", id + " h2", id + " p"];
+            tl.fromTo(parts[0], { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: 0.4, ease: "power3.out" }, at(start + 0.1));
+            tl.fromTo(parts[1], { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.55, ease: "power4.out" }, at(start + 0.18));
+            tl.fromTo(parts[2], { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" }, at(start + 0.4));
+            tl.fromTo(parts, { opacity: 1, y: 0 }, { opacity: 0, y: -16, duration: 0.3, ease: "power2.in", immediateRender: false }, at(end - 0.38));
+            if (step === null) return;
+            const seg = segs[step];
+            tl.fromTo(seg.querySelector("b"), { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power3.out" }, at(start + 0.1));
+            tl.fromTo(seg.querySelector("span"), { color: "#a39a87" }, { color: "#f2a93b", duration: 0.3 }, at(start + 0.1));
+          });
+          tl.fromTo("#rail", { opacity: 1 }, { opacity: 0, duration: 0.4, immediateRender: false }, at(66.9));
+          window.__timelines["headlines"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

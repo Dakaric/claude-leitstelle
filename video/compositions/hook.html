@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <template>
+      <style>
+        #hook-root {
+          position: absolute;
+          inset: 0;
+          color: var(--fg);
+          font-family: Montserrat, sans-serif;
+        }
+        #hook-ghost {
+          position: absolute;
+          left: 60px;
+          bottom: -80px;
+          font-size: 300px;
+        }
+        #hook-text {
+          position: absolute;
+          left: 96px;
+          top: 318px;
+          width: 1040px;
+        }
+        #hook-h1 {
+          margin-top: 22px;
+        }
+        .hook-line {
+          display: block;
+          font-size: 70px;
+          font-weight: 900;
+          line-height: 1.1;
+          letter-spacing: -0.035em;
+        }
+        .hook-line .soft {
+          color: var(--amber);
+        }
+        #hook-sub {
+          margin-top: 30px;
+          font-size: 32px;
+          font-weight: 400;
+          color: var(--dim);
+        }
+        #hook-mini {
+          position: absolute;
+          left: 1180px;
+          top: 352px;
+          width: 660px;
+          height: 345px;
+        }
+        .mbox {
+          position: absolute;
+          border: 2px solid #3a3328;
+          background: var(--pane);
+          border-radius: 8px;
+          padding: 14px 16px;
+          font-size: 20px;
+          font-weight: 700;
+          color: var(--fg);
+        }
+        .mbox.lead {
+          border-color: var(--amber);
+          color: var(--amber);
+        }
+        .mbox small {
+          display: block;
+          margin-top: 6px;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 14px;
+          font-weight: 400;
+          color: var(--dim);
+        }
+        #hook-mini svg {
+          position: absolute;
+          inset: 0;
+          overflow: visible;
+        }
+        #hook-mini line {
+          stroke: var(--amber);
+          stroke-width: 2.5;
+          stroke-dasharray: 1;
+          stroke-dashoffset: 1;
+          opacity: 0.7;
+        }
+        .mdot {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          background: var(--amber);
+          box-shadow: 0 0 0 3px var(--bg);
+          opacity: 0;
+        }
+      </style>
+
+      <div data-hf-id="hf-w7pe" id="hook-root" data-composition-id="hook" data-width="1920" data-height="1080">
+        <div data-hf-id="hf-9t98" id="hook-ghost" class="ghost" data-ghost="LEITSTELLE"></div>
+        <div data-hf-id="hf-bucs" id="hook-text" data-layout-allow-overlap="">
+          <div data-hf-id="hf-v8xq" class="kicker" id="hook-kicker">CLAUDE CODE IM TEAM</div>
+          <div data-hf-id="hf-k5gk" id="hook-h1">
+            <span data-hf-id="hf-zriu" class="hook-line"><span data-hf-id="hf-xfo5" class="soft">Eine Leitstelle</span> verteilt,</span>
+            <span data-hf-id="hf-uly3" class="hook-line">vier Sessions bauen,</span>
+            <span data-hf-id="hf-l5jq" class="hook-line">ein Advisor berät.</span>
+          </div>
+          <div data-hf-id="hf-ljof" id="hook-sub">Gestartet mit /leitstelle-start.</div>
+        </div>
+        <div data-hf-id="hf-1638" id="hook-mini" data-layout-allow-overlap="">
+          <div data-hf-id="hf-n5ld" class="mbox lead" style="left: 4px; top: 4px; width: 295px; height: 204px">Leitstelle<small data-hf-id="hf-y7wd">verteilt</small></div>
+          <div data-hf-id="hf-ifh3" class="mbox" style="left: 4px; top: 216px; width: 295px; height: 125px">Advisor<small data-hf-id="hf-rjxj">berät, liest nur</small></div>
+          <div data-hf-id="hf-xcc0" class="mbox ses" style="left: 307px; top: 4px; width: 170px; height: 165px">Session 1<small data-hf-id="hf-e03k">baut</small></div>
+          <div data-hf-id="hf-fjr1" class="mbox ses" style="left: 485px; top: 4px; width: 171px; height: 165px">Session 2<small data-hf-id="hf-nsoo">baut</small></div>
+          <div data-hf-id="hf-b9b2" class="mbox ses" style="left: 307px; top: 177px; width: 170px; height: 164px">Session 3<small data-hf-id="hf-mlrl">baut</small></div>
+          <div data-hf-id="hf-1rsj" class="mbox ses" style="left: 485px; top: 177px; width: 171px; height: 164px">Session 4<small data-hf-id="hf-n02m">baut</small></div>
+          <svg data-hf-id="hf-u1eb" viewBox="0 0 660 345" />
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          const tl = gsap.timeline({ paused: true });
+          const svg = document.querySelector("#hook-mini svg");
+          const mini = document.getElementById("hook-mini");
+          const LEAD = { x: 151, y: 106 };
+          const TARGETS = [
+            { x: 392, y: 86 },
+            { x: 570, y: 86 },
+            { x: 392, y: 259 },
+            { x: 570, y: 259 },
+          ];
+          const sessions = mini.querySelectorAll(".ses");
+
+          tl.fromTo("#hook-kicker", { x: -40, opacity: 0 }, { x: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, 0.15);
+          tl.fromTo("#hook-root .hook-line", { y: 70, opacity: 0 }, { y: 0, opacity: 1, duration: 0.65, ease: "power4.out", stagger: 0.22 }, 0.3);
+          tl.fromTo("#hook-sub", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, 1.25);
+          tl.fromTo("#hook-mini .mbox", { scale: 0.86, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.45, ease: "back.out(1.6)", stagger: 0.08 }, 0.5);
+          tl.fromTo("#hook-ghost", { x: -60 }, { x: 40, duration: 5.3, ease: "none" }, 0);
+
+          TARGETS.forEach((b, i) => {
+            const ln = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            ln.setAttribute("x1", LEAD.x);
+            ln.setAttribute("y1", LEAD.y);
+            ln.setAttribute("x2", b.x);
+            ln.setAttribute("y2", b.y);
+            ln.setAttribute("pathLength", "1");
+            svg.appendChild(ln);
+            const dot = document.createElement("div");
+            dot.className = "mdot";
+            mini.appendChild(dot);
+            const out = 1.9 + i * 0.12;
+            const back = 3.2 + i * 0.12;
+            tl.fromTo(ln, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.7, ease: "power2.inOut" }, out);
+            tl.fromTo(dot, { x: LEAD.x, y: LEAD.y, xPercent: -50, yPercent: -50 }, { x: b.x, y: b.y, duration: 0.7, ease: "power2.inOut", immediateRender: false }, out);
+            tl.fromTo(dot, { opacity: 0 }, { opacity: 1, duration: 0.1, immediateRender: false }, out);
+            tl.fromTo(sessions[i], { borderColor: "#3a3328" }, { borderColor: "#f2a93b", duration: 0.2, immediateRender: false }, out + 0.7);
+            tl.fromTo(dot, { x: b.x, y: b.y }, { x: LEAD.x, y: LEAD.y, duration: 0.7, ease: "power2.inOut", immediateRender: false }, back);
+            tl.fromTo(dot, { opacity: 1 }, { opacity: 0, duration: 0.15, immediateRender: false }, back + 0.7);
+          });
+
+          const EXIT = { duration: 0.45, ease: "power2.in", immediateRender: false };
+          tl.fromTo("#hook-text", { opacity: 1, y: 0 }, Object.assign({ opacity: 0, y: -30 }, EXIT), 4.7);
+          tl.fromTo("#hook-mini", { opacity: 1, scale: 1 }, Object.assign({ opacity: 0, scale: 1.08 }, EXIT), 4.7);
+          tl.fromTo("#hook-ghost", { opacity: 1 }, Object.assign({ opacity: 0 }, EXIT), 4.7);
+          window.__timelines["hook"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

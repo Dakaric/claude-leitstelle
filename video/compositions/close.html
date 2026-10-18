@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <template>
+      <style>
+        #close-root {
+          position: absolute;
+          inset: 0;
+          color: var(--fg);
+          font-family: Montserrat, sans-serif;
+        }
+        #close-ghost {
+          position: absolute;
+          right: -40px;
+          bottom: -70px;
+          font-size: 320px;
+        }
+        #close-wrap {
+          position: absolute;
+          left: 120px;
+          top: 318px;
+          width: 1500px;
+        }
+        #close-cmd {
+          margin-top: 18px;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 124px;
+          font-weight: 700;
+          line-height: 1.1;
+          letter-spacing: -0.03em;
+          color: var(--amber);
+        }
+        #close-rule {
+          margin-top: 26px;
+          width: 1220px;
+          height: 4px;
+          border-radius: 2px;
+          background: var(--amber);
+          transform-origin: 0 50%;
+        }
+        #close-url {
+          margin-top: 34px;
+          font-size: 54px;
+          font-weight: 700;
+          letter-spacing: -0.02em;
+        }
+        #close-sub {
+          margin-top: 14px;
+          font-size: 30px;
+          font-weight: 400;
+          color: var(--dim);
+        }
+      </style>
+
+      <div data-hf-id="hf-7kyk" id="close-root" data-composition-id="close" data-width="1920" data-height="1080">
+        <div data-hf-id="hf-4gmn" id="close-ghost" class="ghost" data-ghost="LEITSTELLE"></div>
+        <div data-hf-id="hf-4yf0" id="close-wrap">
+          <div data-hf-id="hf-gdzv" class="kicker" id="close-kicker">EIN BEFEHL ZUM START</div>
+          <div data-hf-id="hf-5l2j" id="close-cmd">/leitstelle-start</div>
+          <div data-hf-id="hf-5coq" id="close-rule"></div>
+          <div data-hf-id="hf-b6fa" id="close-url">github.com/Dakaric/claude-leitstelle</div>
+          <div data-hf-id="hf-qkqn" id="close-sub">Skills und Anleitung zum Nachbauen</div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          const tl = gsap.timeline({ paused: true });
+          tl.fromTo("#close-ghost", { x: 60 }, { x: -60, duration: 7, ease: "none" }, 0);
+          tl.fromTo("#close-kicker", { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.45, ease: "power3.out" }, 0.4);
+          tl.fromTo("#close-cmd", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.7, ease: "power4.out" }, 0.55);
+          tl.fromTo("#close-rule", { scaleX: 0 }, { scaleX: 1, duration: 0.8, ease: "power3.inOut" }, 1.0);
+          tl.fromTo("#close-url", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, 1.4);
+          tl.fromTo("#close-sub", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 1.9);
+          window.__timelines["close"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

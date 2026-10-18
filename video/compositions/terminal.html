@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <template>
+      <style>
+        #terminal-root {
+          position: absolute;
+          inset: 0;
+          color: var(--fg);
+          font-family: Montserrat, sans-serif;
+        }
+        #viewport {
+          position: absolute;
+          left: 80px;
+          top: 196px;
+          width: 1760px;
+          height: 852px;
+          border-radius: 14px;
+          overflow: hidden;
+          background: var(--win);
+          box-shadow:
+            0 0 0 1px #3a3328,
+            0 40px 120px rgba(0, 0, 0, 0.6);
+        }
+        #world {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1760px;
+          height: 852px;
+        }
+        #titlebar {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1760px;
+          height: 36px;
+          background: #191610;
+          border-bottom: 1px solid var(--line);
+          display: flex;
+          align-items: center;
+        }
+        .tl-dot {
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+          margin-left: 9px;
+        }
+        .tl-dot:first-child {
+          margin-left: 16px;
+        }
+        #titlebar .ttl {
+          position: absolute;
+          left: 0;
+          right: 0;
+          text-align: center;
+          font-size: 14px;
+          font-weight: 700;
+        }
+        #titlebar .ttl span {
+          font-family: "JetBrains Mono", monospace;
+          font-weight: 400;
+          color: var(--dim);
+          margin-left: 10px;
+        }
+        #sidebar {
+          position: absolute;
+          left: 0;
+          top: 36px;
+          width: 200px;
+          height: 816px;
+          background: var(--side);
+          border-right: 1px solid var(--line);
+          padding: 18px 12px;
+        }
+        #sidebar h4 {
+          font-family: "JetBrains Mono", monospace;
+          font-size: 12px;
+          font-weight: 700;
+          letter-spacing: 0.14em;
+          color: var(--dim);
+          padding: 0 8px 12px;
+        }
+        .proj {
+          position: relative;
+          border-radius: 8px;
+          padding: 9px 10px 9px 26px;
+          margin-bottom: 4px;
+          font-size: 15px;
+          font-weight: 700;
+        }
+        .proj::before {
+          content: "";
+          position: absolute;
+          left: 10px;
+          top: 15px;
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: #5c5446;
+        }
+        .proj.on {
+          background: #241f17;
+        }
+        .proj.on::before {
+          background: var(--amber);
+        }
+        .proj .meta {
+          position: relative;
+          display: block;
+          height: 16px;
+          margin-top: 3px;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 12px;
+          font-weight: 400;
+          color: var(--dim);
+        }
+        .proj .meta em {
+          position: absolute;
+          left: 0;
+          top: 0;
+          font-style: normal;
+        }
+        #side-add {
+          position: absolute;
+          left: 22px;
+          bottom: 22px;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 12px;
+          color: var(--dim);
+        }
+        #panes {
+          position: absolute;
+          left: 200px;
+          top: 36px;
+          width: 1560px;
+          height: 816px;
+          background: var(--pane);
+          overflow: hidden;
+        }
+        .pane {
+          position: absolute;
+          background: var(--pane);
+        }
+        .ptitle {
+          position: absolute;
+          left: 0;
+          top: 0;
+          height: 26px;
+          background: var(--bar);
+          border-bottom: 1px solid var(--line);
+          padding: 0 14px;
+          display: flex;
+          align-items: center;
+          white-space: nowrap;
+        }
+        .ptitle b {
+          font-size: 13px;
+          font-weight: 700;
+        }
+        .ptitle span {
+          margin-left: 10px;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 12px;
+          color: var(--dim);
+        }
+        .pbody {
+          position: absolute;
+          overflow: hidden;
+        }
+        .pcontent {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+        }
+        .row {
+          height: 19px;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 13px;
+          line-height: 19px;
+          white-space: pre;
+          color: var(--fg);
+          opacity: 0;
+        }
+        .row .tp {
+          display: inline-block;
+        }
+        .row .cwd,
+        .row.dimr,
+        .row.th {
+          color: var(--dim);
+        }
+        .row .car {
+          color: var(--amber);
+          font-weight: 700;
+        }
+        .row .h,
+        .row.big {
+          font-weight: 700;
+        }
+        .row.in .h,
+        .row.ok .h {
+          color: var(--amber);
+        }
+        .row.cmd {
+          background: #201c15;
+          color: #e4dccb;
+        }
+        .row.hl {
+          background: rgba(242, 169, 59, 0.12);
+        }
+        .row.hl2 {
+          background: rgba(242, 169, 59, 0.2);
+        }
+        .row.boxrow {
+          height: 57px;
+          padding: 4px 0;
+        }
+        .cbox,
+        .dlg {
+          height: 49px;
+          border-radius: 6px;
+          padding: 4px 12px;
+          line-height: 19px;
+        }
+        .cbox {
+          width: 340px;
+          border: 1px solid #8a6326;
+        }
+        .cbox .star {
+          color: var(--amber);
+        }
+        .cbox .d {
+          color: var(--dim);
+        }
+        .dlg {
+          width: 420px;
+          border: 1px solid var(--amber);
+        }
+        .dlg .o {
+          display: inline-block;
+          padding: 0 6px;
+          border-radius: 3px;
+          color: var(--dim);
+        }
+        .pstatus {
+          position: absolute;
+          left: 0;
+          height: 22px;
+          padding: 0 14px;
+          border-top: 1px solid var(--line);
+          background: #141210;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 12px;
+          line-height: 21px;
+          color: var(--dim);
+          white-space: nowrap;
+          opacity: 0;
+        }
+        .pstatus b {
+          color: var(--amber);
+        }
+        .divider {
+          position: absolute;
+          background: #3a3328;
+        }
+        #glows,
+        #flow,
+        #flow svg {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1760px;
+          height: 852px;
+          overflow: visible;
+        }
+        .glow {
+          position: absolute;
+          border: 2px solid var(--amber);
+          opacity: 0;
+        }
+        #flow line {
+          stroke: var(--amber);
+          stroke-width: 2.5;
+          stroke-linecap: round;
+          stroke-dasharray: 1;
+          stroke-dashoffset: 1;
+          opacity: 0;
+        }
+        .pkt {
+          position: absolute;
+          left: 0;
+          top: 0;
+          padding: 7px 14px;
+          border-radius: 999px;
+          background: var(--amber);
+          color: var(--ink);
+          font-family: "JetBrains Mono", monospace;
+          font-size: 16px;
+          font-weight: 700;
+          white-space: nowrap;
+          box-shadow:
+            0 0 0 3px var(--bg),
+            0 10px 30px rgba(0, 0, 0, 0.5);
+          opacity: 0;
+        }
+        #keys-stage {
+          position: absolute;
+          left: 0;
+          top: 900px;
+          width: 1920px;
+          height: 110px;
+          display: grid;
+          place-items: center;
+        }
+        .kcard {
+          grid-area: 1 / 1;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 16px 28px 16px 18px;
+          border-radius: 18px;
+          background: #1f1b14;
+          border: 2px solid #4a4032;
+          box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+          opacity: 0;
+        }
+        .key {
+          display: grid;
+          place-items: center;
+          min-width: 64px;
+          height: 64px;
+          padding: 0 12px;
+          border-radius: 12px;
+          background: #2c261d;
+          border: 2px solid #4a4032;
+          border-bottom-width: 6px;
+          font-size: 32px;
+          font-weight: 700;
+        }
+        .klabel {
+          margin-left: 12px;
+          font-size: 30px;
+          font-weight: 700;
+        }
+        .klabel span {
+          color: var(--amber);
+        }
+      </style>
+      <div data-hf-id="hf-t840" id="terminal-root" data-composition-id="terminal" data-width="1920" data-height="1080">
+        <div data-hf-id="hf-wud3" id="viewport">
+          <div data-hf-id="hf-k6zw" id="world" data-layout-allow-overflow="">
+            <div data-hf-id="hf-wctc" id="titlebar">
+              <div data-hf-id="hf-tno8" class="tl-dot" style="background: #d9645c"></div><div data-hf-id="hf-yayz" class="tl-dot" style="background: #d9ad4f"></div><div data-hf-id="hf-ftc0" class="tl-dot" style="background: #6aae5e"></div>
+              <div data-hf-id="hf-ly8c" class="ttl">kompass<span data-hf-id="hf-vsbw">~/code/kompass</span></div>
+            </div>
+            <div data-hf-id="hf-tt77" id="sidebar">
+              <h4 data-hf-id="hf-j6jx">PROJEKTE</h4>
+              <div data-hf-id="hf-gn5w" class="proj on">kompass<span data-hf-id="hf-2eim" class="meta"><em data-hf-id="hf-y6p4" id="meta-1">1 Terminal</em><em data-hf-id="hf-9q9d" id="meta-6">6 Terminals</em></span></div>
+              <div data-hf-id="hf-vpcz" class="proj">notizbuch<span data-hf-id="hf-ixnm" class="meta"><em data-hf-id="hf-zwbi">2 Terminals</em></span></div>
+              <div data-hf-id="hf-5f8a" class="proj">wetterstation<span data-hf-id="hf-jbyn" class="meta"><em data-hf-id="hf-h5py">1 Terminal</em></span></div>
+              <div data-hf-id="hf-z8lm" class="proj">fotoalbum<span data-hf-id="hf-jq9o" class="meta"><em data-hf-id="hf-fe3c">kein Terminal</em></span></div>
+              <div data-hf-id="hf-c2w5" id="side-add">+ Projekt öffnen</div>
+            </div>
+            <div data-hf-id="hf-9rbu" id="panes"></div>
+            <div data-hf-id="hf-b26p" id="glows"></div>
+            <div data-hf-id="hf-zo5b" id="flow" data-layout-allow-overlap="" data-layout-allow-occlusion=""><svg data-hf-id="hf-qs4w" viewBox="0 0 1760 852" /></div>
+          </div>
+        </div>
+        <div data-hf-id="hf-l6zo" id="keys-stage" data-layout-allow-overlap=""></div>
+      </div>
+      <script>
+        (function () {
+          /* Alle Zeiten sind Sekunden im Gesamtvideo; diese Komposition beginnt bei Sekunde 5. */
+          const OFFSET = 5;
+          const TL = gsap.timeline({ paused: true });
+          const first = (target, from, to, t) => TL.fromTo(target, from, to, t - OFFSET);
+          const tween = (target, from, to, t) => TL.fromTo(target, from, Object.assign({ immediateRender: false }, to), t - OFFSET);
+          /* ---------- Raster der Terminal-Oberfläche ---------- */
+          const LH = 19, CW = 7.8, PADX = 14, PADY = 8, TITLE_H = 26, STATUS_H = 22, AREA = { x: 200, y: 36 };
+          const PROMPT = "~/code/kompass ❯ ";
+          const PROMPT_HTML = '<span class="cwd">~/code/kompass</span> <span class="car">❯</span> ';
+          const CARET = '<span class="car">❯</span> ';
+          const status = (name, extra) => "<b>▸▸ auto</b> · " + name + " · " + extra;
+          const PANES = {
+            L: { x: 0, y: 0, w: 716, h: 500, mw: 1560, mh: 816, clip0: "inset(0px 0px 0px 0px)", title: "Leitstelle", sub: "kompass-leitstelle", status: status("kompass-leitstelle", "main") },
+            A: { x: 0, y: 500, w: 716, h: 316, mw: 716, mh: 316, clip0: "inset(316px 0px 0px 0px)", title: "Advisor", sub: "kompass-advisor · nur lesen", status: status("kompass-advisor", "ohne Bash, Edit, Write") },
+            S1: { x: 716, y: 0, w: 422, h: 408, mw: 844, mh: 816, clip0: "inset(0px 0px 0px 844px)", title: "Session 1", sub: "Suche: Filter nach Region", status: status("kompass-session1", "main") },
+            S2: { x: 1138, y: 0, w: 422, h: 408, mw: 422, mh: 816, clip0: "inset(0px 0px 0px 422px)", title: "Session 2", sub: "Gutscheincodes im Checkout", status: status("kompass-session2", "main") },
+            S3: { x: 716, y: 408, w: 422, h: 408, mw: 422, mh: 408, clip0: "inset(408px 0px 0px 0px)", title: "Session 3", sub: "Abmeldelink im Newsletter", status: status("kompass-session3", "main") },
+            S4: { x: 1138, y: 408, w: 422, h: 408, mw: 422, mh: 408, clip0: "inset(408px 0px 0px 0px)", title: "Session 4", sub: "Ladezeit der Kartenansicht", status: status("kompass-session4", "main") },
+          };
+          const SES = ["S1", "S2", "S3", "S4"];
+          const flowSvg = document.querySelector("#flow svg");
+          const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+          const make = (cls, html, parent, style) => {
+            const n = Object.assign(document.createElement("div"), { className: cls, innerHTML: html || "" });
+            Object.assign(n.style, style || {});
+            return parent.appendChild(n);
+          };
+
+          function wrap(str, width, indent) {
+            const out = [];
+            let rest = str;
+            while (rest.length) {
+              const pre = out.length ? " ".repeat(indent) : "";
+              const avail = width - pre.length;
+              if (rest.length <= avail) return out.concat(pre + rest);
+              let cut = rest.lastIndexOf(" ", avail);
+              if (cut <= 0) cut = avail;
+              out.push(pre + rest.slice(0, cut));
+              rest = rest.slice(cut).replace(/^ /, "");
+            }
+            return out;
+          }
+
+          Object.entries(PANES).forEach(([id, p]) => {
+            p.cap = Math.floor((p.h - TITLE_H - STATUS_H - 2 * PADY) / LH);
+            p.cols = Math.floor((p.w - 2 * PADX) / CW) - 1;
+            p.rows = [];
+            p.el = make("pane", "", document.getElementById("panes"), { left: p.x + "px", top: p.y + "px", width: p.mw + "px", height: p.mh + "px", clipPath: p.clip0 });
+            make("ptitle", "<b>" + p.title + "</b><span>" + p.sub + "</span>", p.el, { width: p.mw + "px" });
+            const body = make("pbody", "", p.el, { left: PADX + "px", top: TITLE_H + PADY + "px", width: p.w - 2 * PADX + "px", height: p.cap * LH + "px" });
+            body.setAttribute("data-layout-allow-overflow", "");
+            p.content = make("pcontent", "", body);
+            p.statusEl = make("pstatus", p.status, p.el, { top: p.h - STATUS_H + "px", width: p.w + "px" });
+          });
+          /* ---------- Zeilen: jede sichtbare Terminalzeile ist ein eigenes Element mit fester Höhe ---------- */
+          function addRow(id, html, cls, at, span) {
+            const row = make("row" + (cls ? " " + cls : ""), html, PANES[id].content, at <= 0 ? { opacity: 1 } : {});
+            PANES[id].rows.push({ el: row, at: at, span: span || 1 });
+            return row;
+          }
+          function say(id, at, head, text, cls, stagger) {
+            const st = stagger === undefined ? 0.045 : stagger;
+            return wrap(head + text, PANES[id].cols, 2).map((ln, i) => {
+              const html = i === 0 && head ? '<span class="h">' + esc(head) + "</span>" + esc(ln.slice(head.length)) : esc(ln);
+              return addRow(id, html, cls, at + i * st);
+            });
+          }
+          function typeInto(id, at, prefix, prefixHtml, text, dur, firstRowAt, hang) {
+            let t = at;
+            wrap(prefix + text, PANES[id].cols, hang).forEach((ln, i) => {
+              const chunk = ln.slice(i === 0 ? prefix.length : hang);
+              const lead = i === 0 ? prefixHtml : " ".repeat(hang);
+              const row = addRow(id, lead + '<span class="tp">' + esc(chunk) + "</span>", "", i === 0 ? firstRowAt : t);
+              const d = dur > 0 ? (dur * chunk.length) / text.length : 0.03;
+              const ease = dur > 0 ? "steps(" + Math.max(1, chunk.length) + ")" : "none";
+              first(row.querySelector(".tp"), { clipPath: "inset(0px 100% 0px 0px)" }, { clipPath: "inset(0px 0% 0px 0px)", duration: d, ease: ease, immediateRender: true }, t);
+              t += d;
+            });
+          }
+          const shell = (id, at, text, dur) => typeInto(id, at, PROMPT, PROMPT_HTML, text, dur, 0, 0);
+          const prompt = (id, at, text, dur) => typeInto(id, at, "❯ ", CARET, text, dur, at, 2);
+          function welcome(id, at, name) {
+            addRow(id, '<div class="cbox"><div><span class="star">✻</span> Claude Code</div><div class="d">' + name + " · " + (id === "A" ? "~/.claude/leitstelle/kompass" : "~/code/kompass") + "</div></div>", "boxrow", at, 3);
+            first(PANES[id].statusEl, { opacity: 0 }, { opacity: 1, duration: 0.2 }, at + 0.05);
+          }
+          function finalize(id) {
+            const p = PANES[id];
+            let units = 0, shown = 0;
+            p.rows.forEach((r) => {
+              units += r.span;
+              if (r.at > 0) first(r.el, { opacity: 0 }, { opacity: 1, duration: 0.05 }, r.at);
+              const need = Math.max(0, units - p.cap);
+              if (need > shown) tween(p.content, { y: -shown * LH }, { y: -need * LH, duration: 0.04, ease: "none" }, r.at);
+              shown = Math.max(shown, need);
+            });
+          }
+          /* ---------- Nachrichtenfluss: Linie, Paket, Aufleuchten ---------- */
+          const rect = (id) => ({ x: AREA.x + PANES[id].x, y: AREA.y + PANES[id].y, w: PANES[id].w, h: PANES[id].h });
+          const center = (id) => ({ x: rect(id).x + rect(id).w / 2, y: rect(id).y + rect(id).h / 2 });
+          function glow(id, t, strength) {
+            const r = rect(id);
+            const g = make("glow", "", document.getElementById("glows"), { left: r.x + "px", top: r.y + "px", width: r.w + "px", height: r.h + "px" });
+            first(g, { opacity: 0 }, { opacity: strength, duration: 0.12, immediateRender: false }, t);
+            tween(g, { opacity: strength }, { opacity: 0, duration: 0.9, ease: "power2.out" }, t + 0.12);
+          }
+          function packet(from, to, label, t, d) {
+            const a = center(from), b = center(to);
+            const ln = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            [["x1", a.x], ["y1", a.y], ["x2", b.x], ["y2", b.y], ["pathLength", 1]].forEach(([k, v]) => ln.setAttribute(k, v));
+            flowSvg.appendChild(ln);
+            first(ln, { strokeDashoffset: 1, opacity: 0.75 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut", immediateRender: false }, t);
+            tween(ln, { opacity: 0.75 }, { opacity: 0, duration: 0.4 }, t + d + 0.1);
+            const pill = make("pkt", esc(label), document.getElementById("flow"));
+            pill.setAttribute("data-layout-allow-occlusion", "");
+            first(pill, { x: a.x, y: a.y, xPercent: -50, yPercent: -50, scale: 0.6 }, { x: b.x, y: b.y, scale: 1, duration: d, ease: "power2.inOut", immediateRender: false }, t);
+            first(pill, { opacity: 0 }, { opacity: 1, duration: 0.12, immediateRender: false }, t);
+            tween(pill, { opacity: 1 }, { opacity: 0, duration: 0.2 }, t + d);
+            glow(from, t, 0.5);
+            glow(to, t + d, 1);
+            return t + d;
+          }
+          function flash(rows, t) {
+            first(rows, { backgroundColor: "#201c15" }, { backgroundColor: "#6b4c1c", duration: 0.18, immediateRender: false }, t);
+            tween(rows, { backgroundColor: "#6b4c1c" }, { backgroundColor: "#201c15", duration: 0.5 }, t + 0.7);
+          }
+          const RIGHT = { keys: ["⌘", "D"], label: "nach rechts teilen" };
+          const DOWN = { keys: ["⌘", "⇧", "D"], label: "nach unten teilen" };
+          /* Eine Advisor-Runde: Session 2 fragt, die Leitstelle legt die Akte bei, der Advisor antwortet direkt mit Kopie. */
+          function advisorRound(t, pace, n, copyNote, question, answer) {
+            const id = "F-S2-0" + n, at = (dt) => t + dt * pace;
+            const frage = "ADVISOR-FRAGE " + id + " (Session 2, kompass-session2): " + question;
+            say("S2", t, "● SendMessage → kompass-leitstelle: ", frage, "hl");
+            const asked = packet("S2", "L", "ADVISOR-FRAGE", at(0.4), 1.0 * pace);
+            say("L", asked + 0.05, "← kompass-session2: ", frage, "in hl", 0.03);
+            say("L", at(2.0), "● ", "Akte beigelegt: advisor/kontext-s2.md (Ziel, Plan, Entscheidungen)", "");
+            say("L", at(2.3), "● ", "SendMessage an kompass-advisor: ADVISOR-FRAGE " + id + " mit Akte", "");
+            const forwarded = packet("L", "A", "FRAGE + AKTE", at(2.5), 0.75 * pace);
+            say("A", forwarded + 0.05, "← kompass-leitstelle: ", "ADVISOR-FRAGE " + id + " von Session 2 (kompass-session2), weitergeleitet von Leitstelle kompass-leitstelle. Kontext: advisor/kontext-s2.md", "in");
+            say("A", at(3.95), "● ", "Read advisor/kontext-s2.md, src/checkout/gutschein.ts", "");
+            say("A", at(4.4), "● SendMessage → kompass-session2, Kopie an kompass-leitstelle: ", "ADVISOR-ANTWORT " + id, "");
+            const answered = packet("A", "S2", "ADVISOR-ANTWORT", at(4.7), 1.05 * pace);
+            const copied = packet("A", "L", "KOPIE", at(4.8), 0.6 * pace);
+            say("L", copied + 0.05, "← Kopie von kompass-advisor: ", "ADVISOR-ANTWORT " + id + ", " + copyNote, "in");
+            say("S2", answered + 0.05, "← kompass-advisor: ", "ADVISOR-ANTWORT " + id + ": " + answer, "in hl2");
+          }
+          function keycap(combo, t, out) {
+            const keys = combo.keys.map((k) => '<div class="key">' + k + "</div>").join("");
+            const card = make("kcard", keys + '<div class="klabel">' + combo.label + "</div>", document.getElementById("keys-stage"));
+            first(card, { opacity: 0, y: 26, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "back.out(1.7)" }, t - 0.45);
+            first(card.querySelectorAll(".key"), { y: 0 }, { y: 4, duration: 0.08, yoyo: true, repeat: 1, ease: "power1.inOut" }, t - 0.1);
+            tween(card, { opacity: 1, y: 0 }, { opacity: 0, y: -12, duration: 0.22, ease: "power2.in" }, out);
+          }
+          /* ---------- Szene 2: Fenster erscheint, fünf Teilungen ---------- */
+          first("#viewport", { y: 90, opacity: 0, scale: 0.97 }, { y: 0, opacity: 1, scale: 1, duration: 0.9, ease: "power3.out" }, 5.1);
+          const SPLITS = [
+            { at: 6.7, combo: RIGHT, shrink: ["L", "inset(0px 0px 0px 0px)", "inset(0px 844px 0px 0px)"], grow: "S1", div: { left: 715, top: 0, w: 2, h: 816, from: { x: 845 } } },
+            { at: 7.9, combo: DOWN, shrink: ["L", "inset(0px 844px 0px 0px)", "inset(0px 844px 316px 0px)"], grow: "A", div: { left: 0, top: 499, w: 716, h: 2, from: { y: 317 } } },
+            { at: 9.1, combo: RIGHT, shrink: ["S1", "inset(0px 0px 0px 0px)", "inset(0px 422px 0px 0px)"], grow: "S2", div: { left: 1137, top: 0, w: 2, h: 816, from: { x: 423 } } },
+            { at: 10.3, combo: DOWN, shrink: ["S1", "inset(0px 422px 0px 0px)", "inset(0px 422px 408px 0px)"], grow: "S3", div: { left: 716, top: 407, w: 422, h: 2, from: { y: 409 } } },
+            { at: 11.5, combo: DOWN, shrink: ["S2", "inset(0px 0px 0px 0px)", "inset(0px 0px 408px 0px)"], grow: "S4", div: { left: 1138, top: 407, w: 422, h: 2, from: { y: 409 } } },
+          ];
+          const SPLIT = { duration: 0.5, ease: "power3.inOut" };
+          SPLITS.forEach((s) => {
+            const [id, from, to] = s.shrink;
+            (s.shrink[1] === PANES[id].clip0 ? first : tween)(PANES[id].el, { clipPath: from }, Object.assign({ clipPath: to }, SPLIT), s.at);
+            first(PANES[s.grow].el, { clipPath: PANES[s.grow].clip0 }, Object.assign({ clipPath: "inset(0px 0px 0px 0px)" }, SPLIT), s.at);
+            const d = s.div;
+            const line = make("divider", "", document.getElementById("panes"), { left: d.left + "px", top: d.top + "px", width: d.w + "px", height: d.h + "px" });
+            first(line, d.from, Object.assign({ x: 0, y: 0 }, SPLIT), s.at);
+            glow(s.grow, s.at + SPLIT.duration, 0.7);
+            keycap(s.combo, s.at, s.at + 0.5);
+          });
+          first("#meta-1", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 12.1);
+          first("#meta-6", { opacity: 0 }, { opacity: 1, duration: 0.2 }, 12.1);
+          /* ---------- Szene 3: /leitstelle-start in der Leitstelle ---------- */
+          first("#world", { x: 0, y: 0, scale: 1, transformOrigin: "0px 0px" }, { x: -310, y: -18, scale: 1.55, duration: 1.0, ease: "power3.inOut" }, 14.0);
+          const sessCmd = (n) =>
+            'cd "$HOME/code/kompass" && claude "Du bist Session ' + n + " (kompass-session" + n + ") im Projekt Kompass. Leitstelle ist kompass-leitstelle. Lade den Skill leitstelle-advisor (Rolle Session). Warte auf die Nachricht LEITSTELLE-START der Leitstelle und fang vorher nichts an.\" --name kompass-session" + n + " --permission-mode auto";
+          const advCmd = 'cd "$HOME/.claude/leitstelle/kompass" && claude "Du bist der Advisor für Kompass. Leitstelle ist kompass-leitstelle. Lies zuerst $HOME/.claude/skills/leitstelle-advisor/SKILL.md …" --setting-sources local --model claude-fable-5-1 --name kompass-advisor --permission-mode auto --disallowedTools Bash "Edit(~/code/kompass/**)" "Write(~/code/kompass/**)" "Edit(~/.claude/**)" "Write(~/.claude/**)"';
+          shell("L", 14.5, "claude --name kompass-leitstelle --permission-mode auto", 1.0);
+          glow("L", 14.5, 0.5);
+          welcome("L", 15.7, "kompass-leitstelle");
+          prompt("L", 16.3, "/leitstelle-start", 0.7);
+          say("L", 17.25, "● ", "Skill leitstelle-start · Projekt Kompass, Präfix kompass", "");
+          const dialog = '<div class="dlg"><div>Wie viele Sessions?   <span class="o">1</span> <span class="o">2</span> <span class="o">3</span> <span class="o" id="dlg-4">4</span></div><div>Mit Advisor?          <span class="o" id="dlg-mit">mit</span> <span class="o">ohne</span></div></div>';
+          addRow("L", dialog, "boxrow", 17.6, 3);
+          const pick = { backgroundColor: "rgba(242,169,59,1)", color: "#1a1408", duration: 0.15, immediateRender: false };
+          first("#dlg-4", { backgroundColor: "rgba(242,169,59,0)", color: "#a39a87" }, pick, 18.4);
+          first("#dlg-mit", { backgroundColor: "rgba(242,169,59,0)", color: "#a39a87" }, pick, 19.1);
+          say("L", 19.7, "● ", "Terminal 1 bis 4: Session 1 bis 4, Terminal 5: Advisor", "");
+          const cmdRows = [1, 2, 3, 4].map((n) => say("L", 20.0 + (n - 1) * 0.42, "", "  " + sessCmd(n), "cmd", 0.04));
+          const advRows = say("L", 21.75, "", "  " + advCmd, "cmd", 0.04);
+          say("L", 22.3, "● ", "Wenn alle laufen, sag mir „alles ready“.", "");
+          tween("#world", { x: -310, y: -18, scale: 1.55 }, { x: 0, y: 0, scale: 1, duration: 0.9, ease: "power3.inOut" }, 23.3);
+          /* ---------- Szene 4: Befehle einfügen ---------- */
+          keycap({ keys: ["⌘", "V"], label: "einfügen, <span>Enter</span>" }, 24.6, 26.0);
+          SES.forEach((id, i) => {
+            const n = i + 1, t = 24.5 + i * 0.75;
+            flash(cmdRows[i], t - 0.4);
+            shell(id, t, sessCmd(n), 0);
+            glow(id, t, 0.6);
+            welcome(id, t + 0.4, "kompass-session" + n);
+            say(id, t + 0.85, "● ", "Skill leitstelle-advisor geladen, Rolle Session.", "");
+            say(id, t + 1.1, "● ", "Warte auf LEITSTELLE-START von kompass-leitstelle.", "dimr");
+          });
+          flash(advRows, 27.15);
+          shell("A", 27.55, advCmd, 0);
+          glow("A", 27.55, 0.6);
+          welcome("A", 27.95, "kompass-advisor");
+          say("A", 28.6, "● ", "Lese SKILL.md, advisor.md und nachrichten.md aus der Startzeile.", "dimr");
+          say("A", 29.6, "● ", "Rolle Advisor für Kompass. Ich lese mit, baue nichts und antworte auf ADVISOR-FRAGE.", "");
+          say("A", 29.95, "● ", "Warte auf ADVISOR-PROBE von kompass-leitstelle.", "dimr");
+          /* ---------- Szene 5: alles ready, Anmeldung ---------- */
+          prompt("L", 33.3, "alles ready", 0.55);
+          glow("L", 33.3, 0.5);
+          say("L", 34.1, "● ", "ListAgents: kompass-session1 bis kompass-session4, kompass-advisor", "");
+          say("L", 34.4, "● ", "SendMessage an S1 bis S4: LEITSTELLE-START", "");
+          const anmeldung = (n) => "ANMELDUNG S" + n + " (kompass-session" + n + "): bereit, Verzeichnis ~/code/kompass, Zweig main, HEAD 4f2a91c";
+          SES.forEach((id, i) => {
+            const n = i + 1;
+            const arrive = packet("L", id, "LEITSTELLE-START", 34.6 + i * 0.12, 0.85);
+            say(id, arrive + 0.05, "← kompass-leitstelle: ", "LEITSTELLE-START: Hier ist Leitstelle kompass-leitstelle, Setup Kompass mit 4 Sessions, Advisor kompass-advisor. Du bist S" + n + " (kompass-session" + n + ").", "in");
+            say(id, arrive + 0.75, "● SendMessage → kompass-leitstelle: ", anmeldung(n), "");
+          });
+          SES.forEach((id, i) => {
+            const back = packet(id, "L", "ANMELDUNG", 36.3 + i * 0.12, 0.8);
+            say("L", back + 0.05, "← kompass-session" + (i + 1) + ": ", anmeldung(i + 1), "in", 0.03);
+          });
+          say("L", 38.3, "● ", "4 Sessions angemeldet", "ok big");
+          const pad = (s, n) => s + " ".repeat(Math.max(1, n - s.length));
+          const tableRow = (a, b, c, d, e) => "  " + pad(a, 18) + pad(b, 11) + pad(c, 16) + pad(d, 7) + e;
+          say("L", 38.5, "", tableRow("Name", "Rolle", "Verzeichnis", "Zweig", "HEAD"), "th");
+          SES.forEach((id, i) => say("L", 38.62 + i * 0.1, "", tableRow("kompass-session" + (i + 1), "Session " + (i + 1), "~/code/kompass", "main", "4f2a91c"), ""));
+          say("L", 39.3, "● ", "Advisor kompass-advisor läuft, Probe folgt.", "dimr");
+          /* ---------- Szene 6: Advisor zuschalten ---------- */
+          say("L", 43.3, "● ", "SendMessage an kompass-advisor: ADVISOR-PROBE", "");
+          const probe = packet("L", "A", "ADVISOR-PROBE", 43.5, 0.7);
+          say("A", probe + 0.05, "← kompass-leitstelle: ", "ADVISOR-PROBE: Leitstelle kompass-leitstelle prüft die Zustellung. Antworte nur mit ADVISOR-PROBE OK.", "in");
+          say("A", 44.8, "● SendMessage → kompass-leitstelle: ", "ADVISOR-PROBE OK", "");
+          const probeOk = packet("A", "L", "ADVISOR-PROBE OK", 45.0, 0.7);
+          say("L", probeOk + 0.05, "← kompass-advisor: ", "ADVISOR-PROBE OK", "in");
+          say("L", 46.1, "● ", "SendMessage an S1 bis S4: ADVISOR-BEREIT", "");
+          SES.forEach((id, i) => {
+            const arrive = packet("L", id, "ADVISOR-BEREIT", 46.3 + i * 0.12, 0.85);
+            say(id, arrive + 0.05, "← kompass-leitstelle: ", "ADVISOR-BEREIT: Advisor ist kompass-advisor. Fragen ab jetzt als ADVISOR-FRAGE an mich (Leitstelle kompass-leitstelle). Deine nächste Fragen-ID: F-S" + (i + 1) + "-01.", "in");
+          });
+          say("L", 47.6, "● ", "alle angemeldet: 4 Sessions, Advisor bereit", "ok");
+          /* ---------- Szene 7: Session 2 fragt, Advisor antwortet ---------- */
+          say("S1", 50.3, "● ", "Edit src/suche/filter.ts: Filter nach Region", "");
+          say("S2", 50.4, "● ", "Read src/checkout/gutschein.ts", "");
+          say("S3", 50.6, "● ", "Edit mail/newsletter.html: Abmeldelink im Footer", "");
+          say("S4", 50.9, "● ", "Read src/karte/KartenAnsicht.tsx", "");
+          advisorRound(50.9, 1, 1, "An Nutzer: nein", "Gutscheincode pro Konto einmalig, Unique-Index oder Prüfung im Service?", "Unique-Index auf (konto_id, code), Service fängt die Verletzung ab. Akte: stimmt. Sicherheit: hoch. An Nutzer: nein");
+          /* ---------- Szene 8: Frage, die nur der Mensch beantworten kann ---------- */
+          advisorRound(60.2, 0.55, 2, "An Nutzer: ja", "Alte doppelte Einlösungen vor dem Index bereinigen?", "Erst bereinigen, dann Index anlegen. Akte: stimmt. Sicherheit: mittel. An Nutzer: ja: Dürfen alte, doppelt eingelöste Codes gelöscht werden?");
+          tween("#world", { x: 0, y: 0, scale: 1 }, { x: -310, y: -18, scale: 1.55, duration: 0.9, ease: "power3.inOut" }, 63.5);
+          say("L", 64.5, "● ", "Frage an dich, gesammelt (1 offen):", "ok big hl2");
+          say("L", 64.7, "", "  F-S2-02, Session 2: Dürfen alte, doppelt eingelöste Codes gelöscht werden?", "big hl2");
+          glow("L", 64.7, 1);
+
+          Object.keys(PANES).forEach(finalize);
+          tween("#viewport", { opacity: 1, scale: 1 }, { opacity: 0, scale: 0.95, duration: 0.6, ease: "power2.in" }, 66.9);
+          window.__timelines["terminal"] = TL;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

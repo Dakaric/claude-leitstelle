@@ -1,0 +1,74 @@
+[
+  {
+    "name": "01-hook",
+    "start": 0.15,
+    "length": 5.09,
+    "fits": true,
+    "text": "Eine Leitstelle verteilt. Vier Sessions bauen. Ein Advisor berät.",
+    "heard": "Eine Leitstelle verteilt, vier Sessions bauen, ein Advisor berät"
+  },
+  {
+    "name": "02-teilen",
+    "start": 5.55,
+    "length": 6.87,
+    "fits": true,
+    "text": "Teil dein Terminal in sechs Panes: Command D nach rechts, Command Shift D nach unten.",
+    "heard": "Teil dein Terminal in sechs Panes. Command D nach rechts, Command Shift D nach unten"
+  },
+  {
+    "name": "03-starten",
+    "start": 14.15,
+    "length": 8.43,
+    "fits": true,
+    "text": "In der Leitstelle startest du Leitstelle-Start. Zwei Fragen, dann gibt es für jede Session einen fertigen Startbefehl.",
+    "heard": "In der Leitstelle startest du Leitstellestart. Zwei Fragen, dann gibt es für jede Session einen fertigen Startbefehl"
+  },
+  {
+    "name": "04-einfuegen",
+    "start": 24.15,
+    "length": 5.63,
+    "fits": true,
+    "text": "Die Befehle kommen in die Terminals. Jede Session startet mit ihrem Namen und wartet.",
+    "heard": "Die Befehle kommen in die Terminals. Jede Session startet mit ihrem Namen und wartet."
+  },
+  {
+    "name": "05-anmelden",
+    "start": 33.15,
+    "length": 9.27,
+    "fits": true,
+    "text": "Du sagst: alles ready. Die Leitstelle meldet sich bei allen, erklärt die Spielregeln und sammelt die Anmeldungen ein.",
+    "heard": "Du sagst: \"Alles ready.\" Die Leitstelle meldet sich bei allen, erklärt die Spielregeln und sammelt die Anmeldungen ein"
+  },
+  {
+    "name": "06-advisor",
+    "start": 43.15,
+    "length": 5.43,
+    "fits": true,
+    "text": "Dann prüft sie den Advisor. Danach wissen alle, wohin ihre Fragen gehen.",
+    "heard": "Dann prüft sie den Advisor. Danach wissen alle, wohin ihre Fragen gehen"
+  },
+  {
+    "name": "07-arbeiten",
+    "start": 50.15,
+    "length": 9.22,
+    "fits": true,
+    "text": "Hat eine Session eine Entscheidungsfrage, legt die Leitstelle die Akte bei und gibt sie weiter. Der Advisor antwortet direkt.",
+    "heard": "Hat eine Session eine Entscheidungsfrage, legt die Leitstelle die Akte bei und gibt sie weiter. Der Advisor antwortet direkt"
+  },
+  {
+    "name": "08-buendeln",
+    "start": 60.15,
+    "length": 4.31,
+    "fits": true,
+    "text": "Was nur du entscheiden kannst, bekommst du gebündelt vorgelegt.",
+    "heard": "Was nur du entscheiden kannst, bekommst du gebündelt vorgelegt"
+  },
+  {
+    "name": "09-abschluss",
+    "start": 67.35,
+    "length": 5.33,
+    "fits": true,
+    "text": "Zwei Skills, frei auf GitHub. Fang an mit Leitstelle-Start.",
+    "heard": "Zwei Skills frei auf GitHub. Fang an mit Leitstelle Start"
+  }
+]
