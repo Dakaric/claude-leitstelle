@@ -1,11 +1,12 @@
 ---
 name: leitstelle-advisor
-description: "Betreibt eine Fable-Session als Advisor neben Leitstelle und Bau-Sessions S1 bis Sx: Sessions fragen bei Entscheidungen zuerst den Advisor über die Leitstelle, die Kontext beilegt. Nutze, wenn ein Advisor oder Fable als Advisor gestartet werden soll, wenn eine Leitstelle oder ein Leitstand mit Advisor läuft, wenn eine Startzeile „Du bist der Advisor“ nennt oder wenn eine Nachricht mit ADVISOR- beginnt."
+description: "Betreibt eine eigene Session als Advisor (Standard Claude Fable, ersatzweise Opus) neben Leitstelle und Bau-Sessions S1 bis Sx: Sessions fragen bei Entscheidungen zuerst den Advisor über die Leitstelle, die Kontext beilegt. Nutze, wenn ein Advisor oder Fable als Advisor gestartet werden soll, wenn eine Leitstelle oder ein Leitstand mit Advisor läuft, wenn eine Startzeile „Du bist der Advisor“ nennt oder wenn eine Nachricht mit ADVISOR- beginnt."
+user-invocable: false
 ---
 
 # Leitstelle mit Advisor
 
-Neben der Leitstelle und den Bau-Sessions läuft eine eigene Session auf Claude Fable 5.1 als Advisor. Er berät nur und arbeitet lesend, die Sessions bauen. Leitstand ist dasselbe wie Leitstelle. Das Modell ist der Standard und lässt sich beim Start ändern: Im Startbefehl steht es hinter `--model`.
+Neben der Leitstelle und den Bau-Sessions läuft eine eigene Session als Advisor, standardmäßig auf Claude Fable 5.1, damit ein anderes Modell als das der Sessions prüft. Modell und Effort wählt der Nutzer beim Start in `leitstelle-start`, ohne Fable-Zugang Opus 5.5. Er berät nur und arbeitet lesend, die Sessions bauen. Leitstand ist dasselbe wie Leitstelle.
 
 Eine Frage läuft so: Session an Leitstelle, Leitstelle legt die Kontextakte bei und leitet an den Advisor weiter, der Advisor antwortet direkt an die Session und schickt der Leitstelle eine Kopie.
 

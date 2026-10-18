@@ -17,7 +17,7 @@ Mit Advisor steht in der Startzeile vor „Warte“ zusätzlich: „Lade den Ski
 Startbefehl und Startzeile kommen aus `~/.claude/skills/leitstelle-advisor/references/vorlagen.md`, Abschnitt „Startbefehl und Startzeile“, dort ist ihr Owner. Für diesen Skill wird daraus eine Zeile:
 
 - `cd "<ablage>" && claude "<Startzeile>" <Optionen aus vorlagen.md>`
-- In den Optionen aus vorlagen.md werden `<präfix>`, `<Projekt>`, die Pfade und der Modus eingesetzt; `--name` und `--permission-mode` stehen dort schon, beide vor `--disallowedTools`. Hat Teil 1 den Namen wegen einer Kollision verlängert, steht der verlängerte Name dort.
+- In den Optionen aus vorlagen.md werden `<präfix>`, `<Projekt>`, die Pfade, der Modus sowie Modell und Effort aus dem Dialog eingesetzt (Fable 5.1 = `claude-fable-5-1`, Opus 5.5 = `claude-opus-5-5`); `--name` und `--permission-mode` stehen dort schon, beide vor `--disallowedTools`. Hat Teil 1 den Namen wegen einer Kollision verlängert, steht der verlängerte Name dort.
 - In der Startzeile: Leitstelle `<leitstelle>`, Sessions `S1 (<präfix>-session1)` bis `S<n> (<präfix>-session<n>)`, Repo und Fragenbuch des Projekts.
 
 ## Beispiel: Kompass, zwei Sessions, ohne Advisor, Leitstelle kompass-leitstelle, Modus auto

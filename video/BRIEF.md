@@ -21,7 +21,7 @@ Eine Leitstelle verteilt die Arbeit, mehrere Claude-Code-Sessions bauen parallel
 
 1. Hook: mehrere Sessions, eine Leitstelle.
 2. Terminal-App mit einem Fenster, Panes werden geteilt (⌘D nach rechts, ⌘⇧D nach unten), Endlayout: Leitstelle links oben groß, Advisor links unten, vier Sessions rechts im 2×2-Raster.
-3. In der Leitstelle: `/leitstelle-start`, Dialog „Wie viele Sessions?“ → 4, „Mit Advisor?“ → mit. Die Leitstelle gibt je Terminal einen Startbefehl mit `--name` aus.
+3. In der Leitstelle: `/leitstelle-start`, Dialog mit drei Fragen: Sessions 4, Advisor Fable 5.1, Effort high. Der Advisor-Befehl trägt `--model claude-fable-5-1 --effort high`. Die Leitstelle gibt je Terminal einen Startbefehl mit `--name` aus.
 4. Befehle in die Panes, jede Session startet und wartet.
 5. „alles ready“ in der Leitstelle: LEITSTELLE-START fliegt an jede Session, ANMELDUNG kommt zurück, Tabelle „alle angemeldet“.
 6. Advisor: ADVISOR-PROBE → ADVISOR-PROBE OK, danach ADVISOR-BEREIT an alle Sessions.

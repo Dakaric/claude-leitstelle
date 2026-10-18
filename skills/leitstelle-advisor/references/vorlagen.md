@@ -48,15 +48,13 @@ Status-Werte: `offen`, `Rückfrage offen`, `beantwortet`, `beim Nutzer`, `erledi
 
 Der Nutzer startet den Advisor selbst, aus der Ablage des Projekts. `--setting-sources local` lädt keine Allow-Regeln (weder aus `~/.claude/settings.json` noch aus Projekt-Settings), `--disallowedTools` nimmt Bash weg und sperrt das Schreiben in Repos, `~/.claude` und `advisor/`. Lesen bleibt überall erlaubt. `--restricted` taugt nicht: Damit läuft der Advisor nur über Remote Control, ohne seinen Namen und ohne `notify_when_idle`.
 
-Das Modell `claude-fable-5-1` ist der Standard. Soll der Advisor mit einem anderen laufen, ersetzt der Nutzer den Wert hinter `--model` beim Start.
-
 Pfadmuster in `--disallowedTools`: Ein Pfad unter dem Home-Verzeichnis beginnt mit `~/`, jeder andere mit `//` und dem absoluten Pfad ohne führenden Schrägstrich. Pro Repo ein Paar `Edit` und `Write`. Der Beispielbefehl gilt für das Projekt Kompass mit Repo `~/code/kompass`, Leitstelle in `auto`:
 
 ```bash
-cd "$HOME/.claude/leitstelle/kompass" && claude "<Startzeile>" --setting-sources local --model claude-fable-5-1 --name kompass-advisor --permission-mode auto --disallowedTools Bash NotebookEdit "Edit(~/code/kompass/**)" "Write(~/code/kompass/**)" "Edit(~/.claude/**)" "Write(~/.claude/**)" "Edit(~/.claude/leitstelle/kompass/advisor/**)" "Write(~/.claude/leitstelle/kompass/advisor/**)"
+cd "$HOME/.claude/leitstelle/kompass" && claude "<Startzeile>" --setting-sources local --model claude-fable-5-1 --effort high --name kompass-advisor --permission-mode auto --disallowedTools Bash NotebookEdit "Edit(~/code/kompass/**)" "Write(~/code/kompass/**)" "Edit(~/.claude/**)" "Write(~/.claude/**)" "Edit(~/.claude/leitstelle/kompass/advisor/**)" "Write(~/.claude/leitstelle/kompass/advisor/**)"
 ```
 
-Als Vorlage mit Platzhaltern: `cd "<ablage>"`, `--name <präfix>-advisor`, `--permission-mode <wie die Sessions, nie bypassPermissions>`, je Repo `"Edit(<repo>/**)" "Write(<repo>/**)"` und `"Edit(<ablage>/advisor/**)" "Write(<ablage>/advisor/**)"`, Pfade nach dem Muster oben.
+Als Vorlage mit Platzhaltern: `cd "<ablage>"`, `--model <modell, Standard claude-fable-5-1>`, `--effort <effort, Standard high>`, `--name <präfix>-advisor`, `--permission-mode <wie die Sessions, nie bypassPermissions>`, je Repo `"Edit(<repo>/**)" "Write(<repo>/**)"` und `"Edit(<ablage>/advisor/**)" "Write(<ablage>/advisor/**)"`, Pfade nach dem Muster oben.
 
 Ohne die Nutzer-Settings findet die Session den Skill nicht über das Skill-Werkzeug. Deshalb nennt die Startzeile die Dateien, die der Advisor selbst liest.
 

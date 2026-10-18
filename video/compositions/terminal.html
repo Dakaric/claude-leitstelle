@@ -220,6 +220,9 @@
           height: 57px;
           padding: 4px 0;
         }
+        .row.boxrow.tall {
+          height: 76px;
+        }
         .cbox,
         .dlg {
           height: 49px;
@@ -228,7 +231,8 @@
           line-height: 19px;
         }
         .cbox {
-          width: 340px;
+          width: max-content;
+          min-width: 340px;
           border: 1px solid #8a6326;
         }
         .cbox .star {
@@ -238,8 +242,11 @@
           color: var(--dim);
         }
         .dlg {
-          width: 420px;
+          width: 580px;
           border: 1px solid var(--amber);
+        }
+        .dlg.three {
+          height: 68px;
         }
         .dlg .o {
           display: inline-block;
@@ -388,7 +395,7 @@
           const status = (name, extra) => "<b>▸▸ auto</b> · " + name + " · " + extra;
           const PANES = {
             L: { x: 0, y: 0, w: 716, h: 500, mw: 1560, mh: 816, clip0: "inset(0px 0px 0px 0px)", title: "Leitstelle", sub: "kompass-leitstelle", status: status("kompass-leitstelle", "main") },
-            A: { x: 0, y: 500, w: 716, h: 316, mw: 716, mh: 316, clip0: "inset(316px 0px 0px 0px)", title: "Advisor", sub: "kompass-advisor · nur lesen", status: status("kompass-advisor", "ohne Bash, Edit, Write") },
+            A: { x: 0, y: 500, w: 716, h: 316, mw: 716, mh: 316, clip0: "inset(316px 0px 0px 0px)", title: "Advisor", sub: "kompass-advisor · Fable 5.1 · nur lesen", status: status("kompass-advisor", "Fable 5.1 · ohne Bash, Edit, Write") },
             S1: { x: 716, y: 0, w: 422, h: 408, mw: 844, mh: 816, clip0: "inset(0px 0px 0px 844px)", title: "Session 1", sub: "Suche: Filter nach Region", status: status("kompass-session1", "main") },
             S2: { x: 1138, y: 0, w: 422, h: 408, mw: 422, mh: 816, clip0: "inset(0px 0px 0px 422px)", title: "Session 2", sub: "Gutscheincodes im Checkout", status: status("kompass-session2", "main") },
             S3: { x: 716, y: 408, w: 422, h: 408, mw: 422, mh: 408, clip0: "inset(408px 0px 0px 0px)", title: "Session 3", sub: "Abmeldelink im Newsletter", status: status("kompass-session3", "main") },
@@ -553,17 +560,18 @@
           first("#world", { x: 0, y: 0, scale: 1, transformOrigin: "0px 0px" }, { x: -310, y: -18, scale: 1.55, duration: 1.0, ease: "power3.inOut" }, 14.0);
           const sessCmd = (n) =>
             'cd "$HOME/code/kompass" && claude "Du bist Session ' + n + " (kompass-session" + n + ") im Projekt Kompass. Leitstelle ist kompass-leitstelle. Lade den Skill leitstelle-advisor (Rolle Session). Warte auf die Nachricht LEITSTELLE-START der Leitstelle und fang vorher nichts an.\" --name kompass-session" + n + " --permission-mode auto";
-          const advCmd = 'cd "$HOME/.claude/leitstelle/kompass" && claude "Du bist der Advisor für Kompass. Leitstelle ist kompass-leitstelle. Lies zuerst $HOME/.claude/skills/leitstelle-advisor/SKILL.md …" --setting-sources local --model claude-fable-5-1 --name kompass-advisor --permission-mode auto --disallowedTools Bash "Edit(~/code/kompass/**)" "Write(~/code/kompass/**)" "Edit(~/.claude/**)" "Write(~/.claude/**)"';
+          const advCmd = 'cd "$HOME/.claude/leitstelle/kompass" && claude "Du bist der Advisor für Kompass. Leitstelle ist kompass-leitstelle. Lies zuerst $HOME/.claude/skills/leitstelle-advisor/SKILL.md …" --setting-sources local --model claude-fable-5-1 --effort high --name kompass-advisor --permission-mode auto --disallowedTools Bash "Edit(~/code/kompass/**)" "Write(~/code/kompass/**)" "Edit(~/.claude/**)" "Write(~/.claude/**)"';
           shell("L", 14.5, "claude --name kompass-leitstelle --permission-mode auto", 1.0);
           glow("L", 14.5, 0.5);
           welcome("L", 15.7, "kompass-leitstelle");
           prompt("L", 16.3, "/leitstelle-start", 0.7);
           say("L", 17.25, "● ", "Skill leitstelle-start · Projekt Kompass, Präfix kompass", "");
-          const dialog = '<div class="dlg"><div>Wie viele Sessions?   <span class="o">1</span> <span class="o">2</span> <span class="o">3</span> <span class="o" id="dlg-4">4</span></div><div>Mit Advisor?          <span class="o" id="dlg-mit">mit</span> <span class="o">ohne</span></div></div>';
-          addRow("L", dialog, "boxrow", 17.6, 3);
+          const dialog = '<div class="dlg three"><div>Wie viele Sessions?     <span class="o">1</span> <span class="o">2</span> <span class="o">3</span> <span class="o" id="dlg-4">4</span></div><div>Advisor?               <span class="o" id="dlg-fable">Fable 5.1 (empfohlen)</span> <span class="o">Opus 5.5</span> <span class="o">ohne</span></div><div>Effort des Advisors?   <span class="o" id="dlg-high">high (empfohlen)</span> <span class="o">xhigh</span> <span class="o">max</span> <span class="o">medium</span></div></div>';
+          addRow("L", dialog, "boxrow tall", 17.6, 4);
           const pick = { backgroundColor: "rgba(242,169,59,1)", color: "#1a1408", duration: 0.15, immediateRender: false };
-          first("#dlg-4", { backgroundColor: "rgba(242,169,59,0)", color: "#a39a87" }, pick, 18.4);
-          first("#dlg-mit", { backgroundColor: "rgba(242,169,59,0)", color: "#a39a87" }, pick, 19.1);
+          first("#dlg-4", { backgroundColor: "rgba(242,169,59,0)", color: "#a39a87" }, pick, 18.1);
+          first("#dlg-fable", { backgroundColor: "rgba(242,169,59,0)", color: "#a39a87" }, pick, 18.6);
+          first("#dlg-high", { backgroundColor: "rgba(242,169,59,0)", color: "#a39a87" }, pick, 19.1);
           say("L", 19.7, "● ", "Terminal 1 bis 4: Session 1 bis 4, Terminal 5: Advisor", "");
           const cmdRows = [1, 2, 3, 4].map((n) => say("L", 20.0 + (n - 1) * 0.42, "", "  " + sessCmd(n), "cmd", 0.04));
           const advRows = say("L", 21.75, "", "  " + advCmd, "cmd", 0.04);

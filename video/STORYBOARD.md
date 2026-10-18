@@ -11,7 +11,7 @@ status: animated
 src: compositions/hook.html
 time: 0–5.3
 rules: kinetic-beat-slam, svg-path-draw, ambient-glow-bloom
-beat: Hook. „Eine Leitstelle verteilt, vier Sessions bauen, ein Advisor berät.“ Rechts eine Miniatur des Layouts, Pakete fliegen von der Leitstelle zu den Sessions.
+beat: Hook. „Eine Leitstelle, vier Sessions, ein Advisor auf Fable.“ Rechts eine Miniatur des Layouts, Pakete fliegen von der Leitstelle zu den Sessions.
 
 ## Frame 2
 status: animated
@@ -25,7 +25,7 @@ status: animated
 src: compositions/terminal.html (Kopfzeile: compositions/headlines.html)
 time: 14–24
 rules: viewport-change, discrete-text-sequence
-beat: Kamera fährt auf die Leitstelle. `claude`, dann `/leitstelle-start`, Dialog „Wie viele Sessions?“ 4, „Mit Advisor?“ mit. Startbefehle je Terminal mit `--name`.
+beat: Kamera fährt auf die Leitstelle. `claude`, dann `/leitstelle-start`, Dialog mit drei Fragen: Sessions 4, Advisor Fable 5.1, Effort high. Der Advisor-Befehl trägt `--model claude-fable-5-1 --effort high`. Startbefehle je Terminal mit `--name`.
 
 ## Frame 4
 status: animated

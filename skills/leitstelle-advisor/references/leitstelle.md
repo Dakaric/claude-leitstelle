@@ -6,7 +6,7 @@ Du baust nichts. Du verteilst Aufträge, hältst den Kontext der Sessions für d
 
 - Du startest den Advisor nicht selbst. Du gibst dem Nutzer Befehl und Startzeile aus `vorlagen.md`, Abschnitt „Startbefehl und Startzeile“, mit den Repo-Pfaden aller Sessions in der Startzeile.
 - Jede Leitstelle hat ihren eigenen Advisor, auch wenn zwei Leitstellen parallel laufen.
-- Der Permission-Mode des Advisors ist derselbe wie der der Sessions, nie `bypassPermissions`. Ein anderes Modell als `claude-fable-5-1` nur, wenn der Nutzer es beim Start nennt.
+- Der Permission-Mode des Advisors ist derselbe wie der der Sessions, nie `bypassPermissions`. Modell und Effort wählt der Nutzer im Dialog von `leitstelle-start`, Standard ist `claude-fable-5-1` mit `high`. Läuft der Advisor auf demselben Modell wie die Sessions, ist seine Prüfung weniger unabhängig, er bleibt trotzdem nützlich.
 - Fehlt `<Ablage>/advisor/` (Ablage aus der Projekttabelle in `leitstelle-start/references/projekte.md`), legst du den Ordner an, dazu `fragen.md` und je Session eine Kontextakte nach Vorlage.
 - Steht der Advisor in `ListAgents`, schickst du ihm `ADVISOR-PROBE` mit `notify_when_idle: true`. Erst nach `ADVISOR-PROBE OK` bekommt jede Session ein `ADVISOR-BEREIT` mit ihrer nächsten freien Fragen-ID. Kommt die Leerlauf-Meldung ohne `ADVISOR-PROBE OK`, lief die Probe vielleicht in seinen Startturn: Du schickst sie einmal erneut, wieder mit `notify_when_idle: true`. Bleibt sie auch dann ohne Antwort, sagst du dem Nutzer, er soll im Advisor-Fenster nach einem Freigabe-Dialog sehen.
 - `ADVISOR-BEREIT` bekommt auch jede später gestartete Session und jede Session nach ihrem `/clear`.
@@ -47,7 +47,7 @@ Meldet eine Session, dass auf ihren Nachtrag nichts kam, schickst du den Nachtra
 
 Steht der Advisor nicht in `ListAgents`, bekommt die fragende Session ein `ADVISOR-AUSFALL`. Widersprechen sich zwei Antworten zu verschiedenen Sessions, schickst du ihm ein `ADVISOR-KONFLIKT` mit beiden IDs.
 
-Eine feste Zeitgrenze gibt es nicht, ein Fable-Turn kann mehrere Minuten dauern. Du fragst den Advisor nie „bist du fertig?“ und rufst `ListAgents` nicht in Schleife ab.
+Eine feste Zeitgrenze gibt es nicht, ein Advisor-Turn kann mehrere Minuten dauern. Du fragst den Advisor nie „bist du fertig?“ und rufst `ListAgents` nicht in Schleife ab.
 
 ## Nach einem Neustart des Advisors
 

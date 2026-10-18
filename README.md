@@ -1,6 +1,6 @@
 # claude-leitstelle
 
-Eine Claude-Code-Session arbeitet als Leitstelle und verteilt Aufträge an mehrere Bau-Sessions. Ein Advisor auf Claude Fable berät lesend, wenn eine Session vor einer Entscheidung steht.
+Eine Claude-Code-Session arbeitet als Leitstelle und verteilt Aufträge an mehrere Bau-Sessions. Ein Advisor auf Claude Fable 5.1 berät lesend, wenn eine Session vor einer Entscheidung steht.
 
 ![Sechs Terminal-Panes im Raster: links die Leitstelle, darunter der Advisor, rechts vier Bau-Sessions](docs/images/layout.png)
 
@@ -14,7 +14,7 @@ Drei Rollen:
 
 - Die Leitstelle baut nichts. Sie gibt dir die Startbefehle, meldet sich bei allen Sessions, nimmt deine Aufträge entgegen und verteilt sie.
 - Die Sessions (S1 bis S4) bauen. Jede läuft im Repo des Projekts und meldet Fertig, Blocker und Fragen an die Leitstelle.
-- Der Advisor berät nur. Er liest Akten, Pläne und Repos, ändert aber keine Datei und führt nichts mit Nebenwirkung aus.
+- Der Advisor berät nur. Er liest Akten, Pläne und Repos, ändert aber keine Datei und führt nichts mit Nebenwirkung aus. Er läuft standardmäßig auf Claude Fable 5.1 mit Effort `high`. Der Grund ist ein anderes Modell als das der Sessions: Es prüft die Fragen unabhängiger. Hast du keinen Fable-Zugang, ist Opus 5.5 der Weg. Läuft der Advisor auf demselben Modell wie die Sessions, ist die Prüfung weniger unabhängig, er bleibt trotzdem nützlich.
 
 Eine Frage nimmt diesen Weg:
 
@@ -34,7 +34,7 @@ Die Session stellt die Frage an die Leitstelle. Die legt die Kontextakte bei und
 ## Voraussetzungen
 
 - Claude Code mit Nachrichten zwischen lokalen Sessions. Die Skills nutzen dafür die Werkzeuge `ListAgents` und `SendMessage`.
-- Für den Advisor Zugriff auf das Modell `claude-fable-5-1`. Hast du den nicht, ersetzt du beim Start den Wert hinter `--model` durch ein anderes Modell.
+- Für den Advisor Zugriff auf Claude Fable 5.1 (`claude-fable-5-1`), das ist die Empfehlung. Ohne Fable-Zugang wählst du im Dialog Opus 5.5 (`claude-opus-5-5`).
 - Eine Terminal-App mit geteilten Panes, zum Beispiel Orca, iTerm2, Ghostty oder tmux.
 
 ## Installation
@@ -49,6 +49,8 @@ cp -R ~/code/claude-leitstelle/skills/leitstelle-advisor ~/.claude/skills/
 Danach trägst du dein Projekt in `~/.claude/skills/leitstelle-start/references/projekte.md` ein: eine Zeile mit Projekt, Präfix, Repo und Ablage. Die Beispielzeile für Kompass ersetzt du oder ergänzt darunter deine. Nennst du der Leitstelle beim Start ein neues Projekt, leitet sie die Werte selbst ab und trägt sie ein.
 
 Die Ablage ist der Ordner für Fragenbuch und Kontextakten, Standard `~/.claude/leitstelle/<präfix>/`.
+
+Selbst aufrufen musst du nur `/leitstelle-start`. `leitstelle-advisor` ist das Regelwerk für den laufenden Betrieb: Nachrichtenformate, Fragenbuch, Kontextakten und Fehlerfälle. Leitstelle, Sessions und Advisor laden ihn über ihre Startzeilen selbst. Deshalb steht er mit `user-invocable: false` nicht im Slash-Menü.
 
 ## Schritt für Schritt
 
@@ -83,21 +85,21 @@ claude --name kompass-leitstelle --permission-mode auto
 
 Den Modus übernehmen alle Sessions. `bypassPermissions` geht nur ohne Advisor.
 
-Optional gibst du Argumente mit, `argument-hint` im Skill nennt sie: `[projekt] [anzahl] [mit|ohne advisor]`. Mit `/leitstelle-start kompass` entfällt die Frage nach dem Projekt.
+Optional gibst du Argumente mit, `argument-hint` im Skill nennt sie: `[projekt] [anzahl] [fable|opus|ohne] [effort]`. Mit `/leitstelle-start kompass` entfällt die Frage nach dem Projekt. „mit advisor“ heißt Fable mit `high`.
 
-### 4. Zwei Fragen beantworten
+### 4. Drei Fragen beantworten
 
-Die Leitstelle fragt in einem Dialog nur zwei Dinge: wie viele Sessions (1 bis 4) und ob ein Advisor dazukommt. Was du als Argument schon genannt hast, fragt sie nicht noch einmal.
+Die Leitstelle fragt in einem Dialog nur drei Dinge: wie viele Sessions (1 bis 4), welcher Advisor dazukommt (Fable 5.1 als Empfehlung, Opus 5.5 oder ohne) und mit welchem Effort er läuft (high als Empfehlung, außerdem xhigh, max, medium). Ist das Projekt nicht eindeutig, kommt es als vierte Frage dazu. Bei „ohne“ entfällt die Effort-Frage. Fable ist empfohlen, weil ein anderes Modell als das der Sessions die Fragen unabhängiger prüft, Opus 5.5 ist der Weg ohne Fable-Zugang. Eine Modell-ID im Freitext gilt so, wie du sie schreibst. Was du als Argument schon genannt hast, fragt sie nicht noch einmal.
 
 ### 5. Befehle einfügen
 
-Die Leitstelle gibt je Terminal einen fertigen Startbefehl aus, mit `--name` und `--permission-mode`. Der Advisor steht zuletzt. Füge jeden Befehl in das passende Pane ein. Für S1 sieht er so aus:
+Die Leitstelle gibt je Terminal einen fertigen Startbefehl aus, mit `--name` und `--permission-mode`. Der Advisor steht zuletzt und trägt zusätzlich `--model` und `--effort`, im Standard `--model claude-fable-5-1 --effort high`. Füge jeden Befehl in das passende Pane ein. Für S1 sieht er so aus:
 
 ```bash
 cd "$HOME/code/kompass" && claude "Du bist Session 1 (kompass-session1) im Projekt Kompass. Leitstelle ist kompass-leitstelle. Lade den Skill leitstelle-advisor (Rolle Session). Warte auf die Nachricht LEITSTELLE-START der Leitstelle und fang vorher nichts an." --name kompass-session1 --permission-mode auto
 ```
 
-Der Advisor-Befehl lädt `leitstelle-advisor` schon über die Startzeile. Im Advisor-Pane musst du nichts mehr tippen, denn der Befehl der Leitstelle bringt die Startzeile schon mit. Wer von Hand startet, nimmt denselben Befehl samt Startzeile und Sperrmustern aus der Vorlage in [skills/leitstelle-advisor/references/vorlagen.md](skills/leitstelle-advisor/references/vorlagen.md).
+Der Advisor-Befehl sieht, gekürzt um die Sperrmuster, so aus: `cd "$HOME/.claude/leitstelle/kompass" && claude "<Startzeile>" --setting-sources local --model claude-fable-5-1 --effort high --name kompass-advisor --permission-mode auto --disallowedTools ...`. Er lädt `leitstelle-advisor` schon über die Startzeile. Im Advisor-Pane musst du nichts mehr tippen, denn der Befehl der Leitstelle bringt die Startzeile schon mit. Wer von Hand startet, nimmt denselben Befehl samt Startzeile und Sperrmustern aus der Vorlage in [skills/leitstelle-advisor/references/vorlagen.md](skills/leitstelle-advisor/references/vorlagen.md).
 
 Die Sessions starten still und warten.
 

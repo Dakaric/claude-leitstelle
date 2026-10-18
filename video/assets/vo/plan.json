@@ -2,10 +2,10 @@
   {
     "name": "01-hook",
     "start": 0.15,
-    "length": 5.09,
+    "length": 4.21,
     "fits": true,
-    "text": "Eine Leitstelle verteilt. Vier Sessions bauen. Ein Advisor berät.",
-    "heard": "Eine Leitstelle verteilt, vier Sessions bauen, ein Advisor berät"
+    "text": "Eine Leitstelle, vier Sessions, ein Advisor auf Fable.",
+    "heard": "Eine Leitstelle, vier Sessions, ein Advisor auf Fable"
   },
   {
     "name": "02-teilen",
@@ -18,18 +18,18 @@
   {
     "name": "03-starten",
     "start": 14.15,
-    "length": 8.43,
+    "length": 8.91,
     "fits": true,
-    "text": "In der Leitstelle startest du Leitstelle-Start. Zwei Fragen, dann gibt es für jede Session einen fertigen Startbefehl.",
-    "heard": "In der Leitstelle startest du Leitstellestart. Zwei Fragen, dann gibt es für jede Session einen fertigen Startbefehl"
+    "text": "Leitstelle-Start fragt nach Sessions, Advisor-Modell und Effort. Empfohlen ist Fable als zweites Modell.",
+    "heard": "Leitstelle Start fragt nach Sessions, Advisor, Modell und Effort. Empfohlen ist Fable als zweites Modell"
   },
   {
     "name": "04-einfuegen",
     "start": 24.15,
-    "length": 5.63,
+    "length": 5.59,
     "fits": true,
     "text": "Die Befehle kommen in die Terminals. Jede Session startet mit ihrem Namen und wartet.",
-    "heard": "Die Befehle kommen in die Terminals. Jede Session startet mit ihrem Namen und wartet."
+    "heard": "Die Befehle kommen in die Terminals. Jede Session startet mit ihrem Namen und wartet"
   },
   {
     "name": "05-anmelden",
